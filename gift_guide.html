@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="依照送禮場合、對象與預算，快速找到合適的禮物。">
+<title>GIFT GUIDE｜送禮靈感指南</title>
+<style>
+:root{--bg:#faf7f2;--paper:#fffdfa;--ink:#332d28;--muted:#81766c;--accent:#9a7158;--accent-dark:#76523e;--line:#e9e0d7;--soft:#f1e9e1;--rose:#f4e8e4}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;line-height:1.6}
+header{max-width:1080px;margin:auto;padding:24px 24px 12px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:Georgia,serif;font-size:25px;letter-spacing:2px;font-weight:700;color:var(--accent-dark)}nav{display:flex;gap:20px;flex-wrap:wrap}nav a{color:var(--muted);text-decoration:none;font-size:14px}
+.hero{max-width:1080px;margin:18px auto 28px;padding:60px 28px;text-align:center;background:linear-gradient(135deg,#efe4d8,#f8f0e8 55%,#f3e7e2);border:1px solid #eaded2;border-radius:22px}
+.eyebrow{font-size:11px;letter-spacing:3px;color:var(--accent-dark);font-weight:700}.hero h1{font-size:clamp(30px,5vw,48px);line-height:1.25;margin:14px 0 12px;letter-spacing:1px}.hero p{color:#6f6258;margin:0 auto 24px;max-width:560px}
+.btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;background:var(--accent-dark);color:white;text-decoration:none;border:0;border-radius:999px;padding:12px 22px;font-weight:700;cursor:pointer;font-size:14px}.btn:hover{background:#5f4030}.btn.secondary{background:var(--soft);color:var(--accent-dark)}main{max-width:1080px;margin:auto;padding:0 24px 50px}
+.section-title{font-size:21px;margin:34px 0 14px}.section-title small{display:block;font-size:12px;color:var(--muted);font-weight:400;letter-spacing:1px;margin-top:3px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:18px}
+.step-label{font-size:12px;color:var(--accent);font-weight:800;letter-spacing:1.5px;margin-bottom:12px}
+.choices{display:flex;gap:10px;flex-wrap:wrap}.choice{border:1px solid var(--line);background:#fffdfa;color:var(--ink);padding:10px 17px;border-radius:999px;cursor:pointer;font:inherit;font-size:14px}.choice:hover{border-color:var(--accent)}.choice.active{background:var(--soft);border-color:var(--accent);color:var(--accent-dark);font-weight:700}
+.hidden{display:none!important}.filter-summary{color:var(--muted);font-size:13px;margin-top:12px}
+.results-head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}.results-head p{margin:0;color:var(--muted);font-size:13px}
+.product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}
+.product{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;min-height:205px}
+.product-top{display:flex;justify-content:space-between;gap:10px;align-items:start}.tag{font-size:11px;background:var(--soft);color:var(--accent-dark);padding:4px 9px;border-radius:99px;white-space:nowrap}
+.product h3{font-size:17px;margin:10px 0 5px}.product p{font-size:13px;color:#BF1A1A;margin:0 0 14px}.price{font-weight:800;margin-top:auto;margin-bottom:13px}
+.product .btn{width:100%;padding:11px}.empty{padding:35px;text-align:center;background:var(--paper);border:1px dashed var(--line);border-radius:16px;color:var(--muted);margin-top:16px}
+.note{font-size:12px;color:var(--muted);margin-top:20px}.disclosure{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:18px;margin-top:36px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
+@media(max-width:650px){header{padding:18px 18px 8px}nav{gap:10px}nav a{font-size:12px}.hero{margin:14px 14px 22px;padding:42px 20px}main{padding:0 14px 38px}.product-grid{grid-template-columns:1fr}.panel{padding:18px}.logo{font-size:21px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#" style="text-decoration:none">GIFT GUIDE.</a>
+  <nav><a href="#finder">挑選禮物</a><a href="#results">精選推薦</a></nav>
+</header>
+<section class="hero">
+  <div class="eyebrow">A LITTLE GIFT, A LOT OF LOVE</div>
+  <h1>送禮不知道選什麼？</h1>
+  <p>從送禮場合到預算，幫你把挑禮物這件事變簡單。找到一份剛剛好的心意。</p>
+  <a class="btn" href="#finder">開始挑選禮物 <span>→</span></a>
+</section>
+<main>
+  <section id="finder">
+    <h2 class="section-title">找到你的送禮靈感<small>CHOOSE YOUR GIFT</small></h2>
+    <div class="panel">
+      <div class="step-label">STEP 01｜選擇送禮場合</div>
+      <div class="choices" id="occasionChoices">
+        <button class="choice active" data-value="生日">生日</button>
+        <button class="choice" data-value="情人節">情人節</button>
+        <button class="choice" data-value="聖誕節">聖誕節</button>
+        <button class="choice" data-value="新婚禮物">新婚禮物</button>
+        <button class="choice" data-value="暖居禮物">暖居禮物</button>
+      </div>
+      <div id="recipientBlock" style="margin-top:23px">
+        <div class="step-label">STEP 02｜選擇送禮對象</div>
+        <div class="choices" id="recipientChoices">
+          <button class="choice" data-value="男生">男生</button>
+          <button class="choice active" data-value="女生">女生</button>
+        </div>
+      </div>
+      <div style="margin-top:23px">
+        <div class="step-label" id="budgetStep">STEP 03｜選擇送禮預算</div>
+        <div class="choices" id="budgetChoices">
+          <button class="choice" data-value="500-1000">NT$500–1,000</button>
+          <button class="choice active" data-value="1001-2000">NT$1,001–2,000</button>
+          <button class="choice" data-value="2001-5000">NT$2,001–5,000</button>
+          <button class="choice" data-value="5001-8000">NT$5,001–8,000</button>
+          <button class="choice" data-value="8000+">NT$8,000 以上</button>
+        </div>
+      </div>
+      <div class="filter-summary" id="filterSummary" aria-live="polite"></div>
+    </div>
+  </section>
+  <section id="results">
+    <div class="results-head">
+      <div><h2 class="section-title" style="margin-bottom:4px">為你精選的禮物<small>CURATED GIFT IDEAS</small></h2></div>
+      <p id="resultCount"></p>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+    <div class="empty hidden" id="emptyState">這個條件目前還沒有商品，試試其他預算，或稍後再來看看！</div>
+    <p class="note">商品價格與庫存可能變動，請以蝦皮商品頁顯示資訊為準。</p>
+
+  </section>
+</main>
+<footer>GIFT GUIDE. ｜ 送禮靈感指南</footer>
+<script>
+/* ==========================================================
+   商品管理區：在這裡新增、修改商品與貼上自己的蝦皮分潤連結
+   affiliateUrl 請填入你在蝦皮分潤計畫取得的完整追蹤連結。
+   occasions 可填：生日、情人節、聖誕節、新婚禮物、暖居禮物
+   recipients 可填：男生、女生、全部
+   budgets 可填：500-1000、1001-2000、2001-5000、5001-8000、8000+
+   ========================================================== */
+const products = [
+{
+    name: "電動攪拌杯(Tritan搖搖杯)",
+    description: "符合安全檢驗！蛋白粉杯/咖啡杯/奶昔杯，三色可選。",
+    price: 419,
+    occasions: ["生日", "情人節", "聖誕節","暖居禮物"],
+    recipients: ["女生","男生"],
+    budgets: ["500-1000"],
+    affiliateUrl: "https://s.shopee.tw/6fiwgQ88Qj",
+    buttonText: "前往選購"
+  }, 
+{
+    name: "hoi! LAB實驗室香氛 限量禮袋組",
+    description: "符合安全檢驗！內含擴香瓶、空間／織品噴霧、擴香精油補充包、香氛紙片及帆布包。",
+    price: 599,
+    occasions: ["生日", "情人節", "聖誕節","暖居禮物"],
+    recipients: ["女生"],
+    budgets: ["500-1000"],
+    affiliateUrl: "https://s.shopee.tw/8pnPt1EDM0",
+    buttonText: "前往選購"
+  },  
+{
+    name: "鬧滋鬧滋 口味特殊的堅果禮盒 30g*8入",
+    description: "iQTi食品級米其林認證，顛覆傳統的堅果口味",
+    price: 532,
+    occasions: ["暖居禮物", "聖誕節"],
+    recipients: ["男生", "女生"],
+    budgets: ["500-1000"],
+    affiliateUrl: "https://s.shopee.tw/9zzNIQiXHW",
+    buttonText: "前往選購"
+},
+{
+    name: "山脈擴香石禮盒",
+    description: "內含精油、擴香石、蠟燭，三種口味可選。適合喜歡生活儀式感、香氣與居家氛圍的送禮對象。",
+    price: 820,
+    occasions: ["生日", "情人節", "聖誕節","暖居禮物"],
+    recipients: ["女生"],
+    budgets: ["500-1000"],
+    affiliateUrl: "https://s.shopee.tw/7puscv6lVH",
+    buttonText: "前往選購"
+  },
+  {
+    name: "日本製點心盤(貓咪款)5入",
+    description: "日本製！貓控必備",
+    price: 780,
+    occasions: ["生日", "情人節", "聖誕節","暖居禮物"],
+    recipients: ["女生","男生"],
+    budgets: ["500-1000"],
+    affiliateUrl: "https://s.shopee.tw/BVRfG5zjqf",
+    buttonText: "前往選購"
+  },
+  {
+    name: "VANA 冬日香氛美體禮盒",
+    description: "內含身體乳、蠟燭，三種口味可選。適合注重保養、香氣與居家氛圍的送禮對象。",
+    price: 790,
+    occasions: ["生日", "情人節", "聖誕節","暖居禮物"],
+    recipients: ["女生"],
+    budgets: ["500-1000"],
+    affiliateUrl: "https://s.shopee.tw/8AXj1zEbQf",
+    buttonText: "前往選購"
+  },
+  {
+    name: "hoi! LAB台灣百岳香氛- 限量旅行袋香氛禮盒",
+    description: "台灣製！內含洗手乳、擴香瓶、空間噴霧，兩款口味可選。適合注重保養、香氣與居家氛圍的送禮對象。",
+    price: 749,
+    occasions: ["生日", "情人節", "聖誕節","暖居禮物"],
+    recipients: ["女生","男生"],
+    budgets: ["500-1000"],
+    affiliateUrl: "https://s.shopee.tw/1W0p89fwt1",
+    buttonText: "前往選購"
+  },
+  {
+    name: "日本製點心盤 8入小皿 禮物組",  
+    description: "日本製！內含8個小碟子，適合喜歡生活儀式感與居家氛圍的送禮對象。",
+    price: 1088,
+    occasions: ["生日", "情人節", "聖誕節","暖居禮物"],
+    recipients: ["女生","男生"],
+    budgets: ["1001-2000"],
+    affiliateUrl: "https://s.shopee.tw/2BGW2yFNVQ",
+    buttonText: "前往選購"
+  },
+  {
+    name: "VANA 琉璃金玻璃款香氛暖燈禮盒",
+    description: "冬日必備！無火融燭燈，可定時可調光。組合包含蠟燭。",
+    price: 2290,
+    occasions: ["生日", "情人節", "聖誕節","暖居禮物"],
+    recipients: ["女生","男生"],
+    budgets: ["2001-5000"],
+    affiliateUrl: "https://s.shopee.tw/1gKFK1ykGo",
+    buttonText: "前往選購"
+  },
+  {
+    name: "VANA 實木擴香儀禮盒(精油霧化擴香機＋香氛精油)",
+    description: "冬日必備！8款精油可選。無須加水，靜音設計，運用香味營造空間氣氛。",
+    price: 2980,
+    occasions: ["生日", "情人節", "聖誕節","暖居禮物"],
+    recipients: ["女生","男生"],
+    budgets: ["2001-5000"],
+    affiliateUrl: "https://s.shopee.tw/8VAZTnPXXb",
+    buttonText: "前往選購"
+  },
+  {
+    name: "檜山坊 檜木香氛洗沐禮盒",
+    description: "台灣製！內含洗手露、沐浴乳與洗髮乳。賣場有多種組合與款式，點擊按鈕進入挑選！",
+    price: 1350,
+    occasions: ["暖居禮物", "聖誕節","新婚禮物","生日"],
+    recipients: ["男生", "女生"],
+    budgets: ["1001-2000"],
+    affiliateUrl: "https://s.shopee.tw/3VltYqjcdi",
+    buttonText: "前往選購"
+  },
+  {
+    name: "德國百靈BRAUN 子彈口袋電鬍刀",
+    description: "口袋大小，鬍渣別搗蛋，隨時刮出型男好氣場！三色可選。",
+    price: 1511,
+    occasions: ["情人節", "聖誕節","生日"],
+    recipients: ["男生", "女生"],
+    budgets: ["1001-2000"],
+    affiliateUrl: "https://s.shopee.tw/4VeQoeVbhx",
+    buttonText: "前往選購"
+  },
+  {
+    name: "Anker A1664 (具Wh標示)10000mAh超薄磁吸行動電源",
+    description: "可上飛機！四色可選，支援MagSafe磁吸充電，適合喜歡科技與戶外活動的朋友。",
+    price: 1990,
+    occasions: ["情人節", "聖誕節","生日"],
+    recipients: ["男生", "女生"],
+    budgets: ["1001-2000"],
+    affiliateUrl: "https://s.shopee.tw/W8I2wbuu0",
+    buttonText: "前往選購"
+  },
+  {
+    name: "檜山坊 香氛敬沐禮盒-沐浴+洗髮",
+    description: "台灣製！內含沐浴乳與洗髮乳。賣場有多種組合與款式，點擊按鈕進入挑選！",
+    price: 2110,
+    occasions: ["暖居禮物", "聖誕節","新婚禮物","生日"],
+    recipients: ["男生", "女生"],
+    budgets: ["2001-5000"],
+    affiliateUrl: " https://s.shopee.tw/AAInVEH51C",
+    buttonText: "前往選購"
+  },
+  {
+    name: "CHIMEI奇美 智能空氣清淨機",
+    description: "適用4-6坪空間，支援APP遠端控制。",
+    price: 2588,
+    occasions: ["暖居禮物", "聖誕節","新婚禮物","生日","情人節"],
+    recipients: ["男生", "女生"],
+    budgets: ["2001-5000"],
+    affiliateUrl: "https://s.shopee.tw/3B93DyS6lI",
+    buttonText: "前往選購"
+  },
+  {
+    name: "LG樂金 25公升 NeoChef™ 智慧變頻微波爐",
+    description: "智慧變頻均勻加熱，輕鬆享受美味每一刻！",
+    price: 3990,
+    occasions: ["暖居禮物", "聖誕節","新婚禮物","生日"],
+    recipients: ["男生", "女生"],
+    budgets: ["2001-5000"],
+    affiliateUrl: "https://s.shopee.tw/1C1SC4eE8",
+    buttonText: "前往選購"
+  },
+  {
+    name: "宏晉Aural AI 降噪無線耳機",
+    description: "ANC主動降噪 藍牙6.0 通話降噪 入耳式 可調EQ 定位查找 白噪音",
+    price: 769,
+    occasions: ["生日", "聖誕節"],
+    recipients: ["男生", "女生"],
+    budgets: ["500-1000"],
+    affiliateUrl: "https://s.shopee.tw/5LDXj7RTaU",
+    buttonText: "前往選購"
+  },
+  {
+    name: "SONY索尼 WF-C710N 無線藍牙耳機(入耳式) ",
+    description: "通勤必備！支援主動降噪、IPX4防水，適合喜歡聽音樂或通勤的朋友。",
+    price: 2450,
+    occasions: ["生日", "聖誕節","情人節"],
+    recipients: ["男生", "女生"],
+    budgets: ["2001-5000"],
+    affiliateUrl: "https://s.shopee.tw/8pnPxymf33",
+    buttonText: "前往選購"
+  },
+  {
+    name: "SANSUI山水 小植淨除濕器",
+    description: "衣櫃乾燥/衣櫃除濕/小型除濕機/活性碳除臭/防霉/防潮",
+    price: 1899,
+    occasions: ["生日", "聖誕節","暖居禮物","新婚禮物"],
+    recipients: ["男生", "女生"],
+    budgets: ["1001-2000"],
+    affiliateUrl: "https://s.shopee.tw/4B1aMTBwwM",
+    buttonText: "前往選購"
+  },
+  {
+    name: "GUXON 極方塊雙線行動電源(10000mAh)",
+    description: "機身Wh標示，可以上飛機！自帶線，固態行動電源。七色可選。",
+    price: 1140,
+    occasions: ["生日", "聖誕節","暖居禮物","新婚禮物","情人節"],
+    recipients: ["男生", "女生"],
+    budgets: ["1001-2000"],
+    affiliateUrl: "https://s.shopee.tw/3LSUhudWbs",
+    buttonText: "前往選購"
+  },
+  {
+    name: "GARMIN 智慧多功能體脂計",
+    description: "送給注重健康的他/她！二色可選。",
+    price: 4990,
+    occasions: ["生日", "聖誕節","暖居禮物","新婚禮物"],
+    recipients: ["男生", "女生"],
+    budgets: ["2001-5000"],
+    affiliateUrl: "https://s.shopee.tw/4qHIULX5tP",
+    buttonText: "前往選購"
+  }, 
+  {
+    name: "GARMIN 入門級GPS智慧跑錶",
+    description: "送給愛運動的他/她！支援心率、血氧、睡眠監測。六色可選。",
+    price: 7990,
+    occasions: ["生日", "聖誕節","情人節","新婚禮物"],
+    recipients: ["男生", "女生"],
+    budgets: ["5001-8000"],
+    affiliateUrl: "https://s.shopee.tw/AKcF2UxbjG",
+    buttonText: "前往選購"
+  }, 
+ {
+    name: "De'Longhi 半自動義式咖啡機(義享雙萃)",
+    description: "<有多款式可選購！>兩色可選，兩年保固！每天一杯咖啡，享受生活的美好時光。",
+    price: 9990,
+    occasions: ["新婚禮物", "暖居禮物", "聖誕節","生日","情人節"],
+    recipients: ["全部"],
+    budgets: ["8000+"],
+    affiliateUrl: "https://s.shopee.tw/4fxti9WFmP",
+    buttonText: "前往選購"
+  },
+  {
+    name: "GARMIN Lily 2 Active GPS智慧腕錶",
+    description: "睡眠血氧壓力監測，三色可選。",
+    price: 9990,
+    occasions: ["生日", "聖誕節","新婚禮物","情人節"],
+    recipients: ["女生"],
+    budgets: ["8000+"],
+    affiliateUrl: "https://s.shopee.tw/40iBUd1rvg",
+    buttonText: "前往選購"
+  },
+  {
+    name: "SONY索尼 HT-S40R 5.1聲道Soundbar家庭劇院組",
+    description: "影劇迷必備！支援杜比全景聲、DTS:X，適合喜歡看電影或聽音樂的朋友。",
+    price: 9990,
+    occasions: ["生日", "聖誕節","暖居禮物","新婚禮物"],
+    recipients: ["男生", "女生"],
+    budgets: ["8000+"],
+    affiliateUrl: "https://s.shopee.tw/2LZwEAqAhp",
+    buttonText: "前往選購"
+  },
+  {
+    name: "LG S95TR 聲霸Soundbar ",
+    description: "家庭劇院必備！支援杜比全景聲、DTS:X、Hi-Res Audio，適合喜歡看電影或聽音樂的朋友。",
+    price: 28900,
+    occasions: ["生日", "聖誕節","暖居禮物","新婚禮物"],
+    recipients: ["男生", "女生"],
+    budgets: ["8000+"],
+    affiliateUrl: "https://s.shopee.tw/3B93DWhonJ",
+    buttonText: "前往選購"
+  },
+  {
+    name: "Harman Kardon哈曼卡頓 SOUNDSTICKS 5 水母喇叭",
+    description: "愛聽音樂必備！顏值與聲音質感兼具！",
+    price: 11111,
+    occasions: ["生日", "聖誕節","暖居禮物","新婚禮物"],
+    recipients: ["男生", "女生"],
+    budgets: ["8000+"],
+    affiliateUrl: "https://s.shopee.tw/AKcDklKLnG",
+    buttonText: "前往選購"
+  },
+  {
+    name: "日本 recolte 無線萬用調理機切碎器",
+    description: "攪拌/磨泥/打發/切碎，五色可選，適合喜歡料理的朋友。",
+    price: 3480,
+    occasions: ["聖誕節","暖居禮物","新婚禮物"],
+    recipients: ["男生", "女生"],
+    budgets: ["2001-5000"],
+    affiliateUrl: "https://s.shopee.tw/BVULvz65G",
+    buttonText: "前往選購"
+  },
+  {
+    name: "SONY索尼 WF-1000XM6 旗艦真無線降噪耳機(入耳式)",
+    description: "不管工作多浮躁，我的雙耳已降噪！三色可選。",
+    price: 7990,
+    occasions: ["生日", "聖誕節","情人節"],
+    recipients: ["男生", "女生"],
+    budgets: ["5001-8000"],
+    affiliateUrl: "https://s.shopee.tw/906qAM1FmH",
+    buttonText: "前往選購"
+  },
+  {
+    name: "SONY索尼 WF-1000XM5 真無線降噪耳機(入耳式)",
+    description: "老闆，不是不理你，只是我的世界比較好聽！三色可選。",
+    price: 5488,
+    occasions: ["生日", "聖誕節","情人節"],
+    recipients: ["男生", "女生"],
+    budgets: ["5001-8000"],
+    affiliateUrl: "https://s.shopee.tw/906qASqaZS",
+    buttonText: "前往選購"
+  },
+  {
+    name: "SONY索尼 WH-1000XM5 無線降噪耳機(耳罩式)",
+    description: "完美沉浸在音樂的世界裡！四色可選。",
+    price: 7488,
+    occasions: ["生日", "聖誕節","情人節"],
+    recipients: ["男生", "女生"],
+    budgets: ["5001-8000"],
+    affiliateUrl: "https://s.shopee.tw/5fqOCO0tkA",
+    buttonText: "前往選購"
+  },
+  {
+    name: "耕沅星耀黑250ml四入油品禮盒",
+    description: "傳承四代的好油，內含黑麻油、苦茶油、白芝麻油、小磨香油",
+    price: 799,
+    occasions: ["暖居禮物", "聖誕節"],
+    recipients: ["男生", "女生"],
+    budgets: ["500-1000"],
+    affiliateUrl: "https://s.shopee.tw/7fbSVzrGzo",
+    buttonText: "前往選購"
+  },
+  {
+    name: "Mao's 樂陶陶 幸福好日雙層禮盒組",
+    description: "<有多款式可選購！> 產自鶯歌的陶瓷碗盤，日日幸福、時時有財、日日是好日，獻上最真誠的祝福。賣場有多種組合與款式，點擊按鈕進入挑選！",
+    price: 2340,
+    occasions: ["暖居禮物", "聖誕節","新婚禮物"],
+    recipients: ["男生", "女生"],
+    budgets: ["2001-5000"],
+    affiliateUrl: "https://s.shopee.tw/8VAZVuv6y5",
+    buttonText: "前往選購"
+  },
+
+  {
+    name: "De'Longhi 半自動義式咖啡機",
+    description: "<有多款式可選購！>兩年保固！在家也能來杯好咖啡。",
+    price: 5990,
+    occasions: ["新婚禮物", "暖居禮物", "聖誕節","生日","情人節"],
+    recipients: ["全部"],
+    budgets: ["5001-8000"],
+    affiliateUrl: "https://s.shopee.tw/4LL3JNgVmh",
+    buttonText: "前往選購"
+  },
+  {
+    name: "Nutribullet 紐粹樂 頂級勁速營養瞬萃果汁機",
+    description: "<有多款式可選購！> 小機身不佔空間！支援冰沙、果汁、濃湯、醬料。",
+    price: 6990,
+    occasions: ["新婚禮物", "暖居禮物", "聖誕節","生日"],
+    recipients: ["全部"],
+    budgets: ["5001-8000"],
+    affiliateUrl: "https://s.shopee.tw/6q2OI4Sv8L",
+    buttonText: "前往選購"
+  },
+
+  {
+    name: "居家餐具組",
+    description: "實用又有質感，適合祝賀新婚或搬進新家的朋友。",
+    price: 980,
+    occasions: ["新婚禮物", "暖居禮物"],
+    recipients: ["全部"],
+    budgets: ["500-1000"],
+    affiliateUrl: "https://shope.ee/請替換成你的分潤連結",
+    buttonText: "前往蝦皮選購"
+  }
+];
+
+const budgetLabels = {
+  "500-1000":"NT$500–1,000",
+  "1001-2000":"NT$1,001–2,000",
+  "2001-5000":"NT$2,001–5,000",
+  "5001-8000":"NT$5,001–8,000",
+  "8000+":"NT$8,000 以上"
+};
+let selectedOccasion = "生日";
+let selectedRecipient = "女生";
+let selectedBudget = "1001-2000";
+
+function setActive(containerId, value){
+  document.querySelectorAll(`#${containerId} .choice`).forEach(btn=>{
+    btn.classList.toggle("active", btn.dataset.value === value);
+  });
+}
+function render(){
+  const needsRecipient = ["生日","情人節"].includes(selectedOccasion);
+  document.getElementById("recipientBlock").classList.toggle("hidden", !needsRecipient);
+  document.getElementById("budgetStep").textContent = needsRecipient
+    ? "STEP 03｜選擇送禮預算" : "STEP 02｜選擇送禮預算";
+  document.getElementById("filterSummary").textContent =
+    `${selectedOccasion}${needsRecipient ? "・送"+selectedRecipient : ""}・${budgetLabels[selectedBudget]}`;
+  const matched = products.filter(p =>
+    p.occasions.includes(selectedOccasion) &&
+    (!needsRecipient || p.recipients.includes("全部") || p.recipients.includes(selectedRecipient)) &&
+    p.budgets.includes(selectedBudget)
+  );
+  const grid = document.getElementById("productGrid");
+  grid.innerHTML = "";
+  document.getElementById("resultCount").textContent = `找到 ${matched.length} 件推薦`;
+  document.getElementById("emptyState").classList.toggle("hidden", matched.length !== 0);
+  matched.forEach(p=>{
+    const card = document.createElement("article");
+    card.className = "product";
+    const top = document.createElement("div"); top.className = "product-top";
+    const tag = document.createElement("span"); tag.className = "tag"; tag.textContent = selectedOccasion;
+    top.appendChild(tag);
+    const title = document.createElement("h3"); title.textContent = p.name;
+    const desc = document.createElement("p"); desc.textContent = p.description;
+    const price = document.createElement("div"); price.className = "price";
+    price.textContent = "NT$" + p.price.toLocaleString("zh-TW");
+    const link = document.createElement("a"); link.className = "btn";
+    link.textContent = p.buttonText || "前往蝦皮選購 →";
+    link.href = p.affiliateUrl;
+    link.target = "_blank"; link.rel = "sponsored nofollow noopener";
+    card.append(top,title,desc,price,link); grid.appendChild(card);
+  });
+}
+document.querySelectorAll("#occasionChoices .choice").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    selectedOccasion = btn.dataset.value;
+    setActive("occasionChoices",selectedOccasion);
+    render();
+  });
+});
+document.querySelectorAll("#recipientChoices .choice").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    selectedRecipient = btn.dataset.value;
+    setActive("recipientChoices",selectedRecipient);
+    render();
+  });
+});
+document.querySelectorAll("#budgetChoices .choice").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    selectedBudget = btn.dataset.value;
+    setActive("budgetChoices",selectedBudget);
+    render();
+  });
+});
+render();
+</script>
+</body>
+</html>
